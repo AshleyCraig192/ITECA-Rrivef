@@ -9,7 +9,6 @@ if (!isset($_SESSION['user'])) {
 
 $search = isset($_GET['search']) ? trim($_GET['search']) : "";
 
-// Get services based on search (if any)
 if (!empty($search)) {
     $searchTerm = "%" . $search . "%";
     $stmt = $conn->prepare("SELECT services.id, services.title, services.description, services.price, users.name 
@@ -140,7 +139,7 @@ $result = $stmt->get_result();
 </head>
 <body>
 <div class="logo">
-    <a href="dashboard.php">
+    <a href="index.php">
         <img src="images/rrevif_logo.jpg" alt="Rrevif Logo">
     </a>
 </div>
@@ -171,7 +170,7 @@ $result = $stmt->get_result();
     <?php endif; ?>
 
     <div class="back-btn">
-        <a class="btn" href="dashboard.php">⬅ Back to Dashboard</a>
+        <a class="btn" href="index.php">⬅ Back to Dashboard</a>
     </div>
 
 </body>

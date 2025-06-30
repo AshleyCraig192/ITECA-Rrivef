@@ -105,7 +105,7 @@ $result = $stmt->get_result();
         <p>You haven't made any requests yet.</p>
     <?php endif; ?>
 
-    <a href="dashboard.php" class="back-btn">⬅ Back to Dashboard</a>
+    <a href="index.php" class="back-btn">⬅ Back to Dashboard</a>
 </div>
 
 </body>

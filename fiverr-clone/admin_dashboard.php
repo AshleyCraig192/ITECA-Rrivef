@@ -2,18 +2,24 @@
 session_start();
 require 'db.php';
 
-// Only allow admin with specific email
 if (!isset($_SESSION['user']) || $_SESSION['user']['email'] !== 'ashleycraig@admin.com') {
-    header("Location: login.php");
+    header("Location: https://rrivef.infinityfreeapp.com/login.php");
     exit;
 }
 
-// Fetch all services
+if (isset($_GET['delete_service']) && is_numeric($_GET['delete_service'])) {
+    $delete_id = intval($_GET['delete_service']);
+    $delete_stmt = $conn->prepare("DELETE FROM services WHERE id = ?");
+    $delete_stmt->bind_param("i", $delete_id);
+    $delete_stmt->execute();
+    header("Location: https://rrivef.infinityfreeapp.com/admin_dashboard.php");
+    exit;
+}
+
 $services_stmt = $conn->prepare("SELECT services.id, services.title, services.description, services.price, users.name, services.status FROM services JOIN users ON services.user_id = users.id ORDER BY services.id DESC");
 $services_stmt->execute();
 $services_result = $services_stmt->get_result();
 
-// Fetch all requests
 $requests_stmt = $conn->prepare("SELECT requests.id, requests.message, users.name AS buyer_name, services.title FROM requests JOIN users ON requests.buyer_id = users.id JOIN services ON requests.service_id = services.id ORDER BY requests.id DESC");
 $requests_stmt->execute();
 $requests_result = $requests_stmt->get_result();
@@ -76,6 +82,15 @@ $requests_result = $requests_stmt->get_result();
             background-color: #45a049;
         }
 
+        .btn-delete {
+            background-color: #f44336;
+            margin-left: 10px;
+        }
+
+        .btn-delete:hover {
+            background-color: #d32f2f;
+        }
+
         .logo {
             width: 130px;
             margin-bottom: 20px;
@@ -85,7 +100,7 @@ $requests_result = $requests_stmt->get_result();
 </head>
 <body>
 <div class="container">
-    <a href="dashboard.php"><img src="images/rrevif_logo.jpg" alt="Rrevif Logo" class="logo"></a>
+    <a href="index.php"><img src="images/rrevif_logo.jpg" alt="Rrevif Logo" class="logo"></a>
     <h1>Administrator Dashboard</h1>
 
     <h2>All Services</h2>
@@ -96,6 +111,7 @@ $requests_result = $requests_stmt->get_result();
             <p><strong>Price:</strong> R<?= number_format($row['price'], 2) ?></p>
             <p><strong>Posted by:</strong> <?= htmlspecialchars($row['name']) ?></p>
             <p><strong>Status:</strong> <?= htmlspecialchars($row['status'] ?? 'Active') ?></p>
+            <a class="btn btn-delete" href="admin_dashboard.php?delete_service=<?= $row['id'] ?>" onclick="return confirm('Are you sure you want to delete this service?');">🗑 Delete</a>
         </div>
     <?php endwhile; ?>
 

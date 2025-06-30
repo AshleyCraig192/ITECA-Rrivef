@@ -17,16 +17,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($user) {
             if (password_verify($password, $user['password'])) {
-    $_SESSION['user'] = $user; // Store user info
-    if ($user['email'] === 'ashleycraig@admin.com') {
-    header("Location: admin_dashboard.php");
-} else {
-    header("Location: dashboard.php");
-}
-exit();
+                $_SESSION['user'] = $user;
 
-}
-
+                if ($user['email'] === 'ashleycraig@admin.com') {
+                    header("Location: https://rrivef.infinityfreeapp.com/admin_dashboard.php");
+                } else {
+                    header("Location: https://rrivef.infinityfreeapp.com/index.php");
+                }
+                exit();
             } else {
                 $error = "❌ Incorrect password.";
             }
@@ -36,7 +34,7 @@ exit();
     } else {
         $error = "❌ Please fill in all fields.";
     }
-
+}
 ?>
 
 <!DOCTYPE html>

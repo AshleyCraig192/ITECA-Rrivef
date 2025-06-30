@@ -119,7 +119,7 @@ $result = $stmt->get_result();
         <p>No new service requests.</p>
     <?php endif; ?>
 
-    <a href="dashboard.php" class="back-link">⬅ Back to Dashboard</a>
+    <a href="index.php" class="back-link">⬅ Back to Dashboard</a>
 </div>
 
 </body>
